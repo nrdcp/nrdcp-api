@@ -1,0 +1,15 @@
+{
+  "name": "nrdcp-api",
+  "version": "1.0.0",
+  "description": "nrdcp nodejs API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "author": "",
+  "dependencies": {
+    "@google-cloud/bigquery": "^4.7.0",
+    "apicache": "^1.5.3",
+    "express": "^4.17.1"
+  }
+}
