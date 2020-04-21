@@ -1,18 +1,29 @@
 const express = require('express');
-const apicache = require('apicache');
+const cors = require('cors');
+const responseCachePlugin = require('apollo-server-plugin-response-cache');
+const { ApolloServer } = require('apollo-server-express');
 
-const { homeSensorLatestHandler } = require('./home-sensor');
+const { getDataSources } = require('./data-sources');
+const { typeDefs, resolvers } = require('./graphql-modules');
 
 const app = express();
-const cache = apicache.middleware;
 
 app.get('/', (req, res) => {
   res.send('api I am');
 });
 
-app.get('/v1/home-sensor/latest', cache('10 minutes'), homeSensorLatestHandler);
-
 const port = process.env.PORT || 8080;
+
+const apollo = new ApolloServer({
+  typeDefs,
+  resolvers,
+  dataSources: getDataSources,
+  plugins: [responseCachePlugin()],
+});
+
+app.use(cors());
+
+apollo.applyMiddleware({ app, path: '/graphql' });
 
 app.listen(port, () => {
   console.log('Listening on port', port);

@@ -1,10 +1,6 @@
-# nrdcp API
+# nrdcp GraphQL API
 
-## endpoints
-
-### /v1/home-sensor/latest
-
-## setting up
+## credentials
 
 check correct project is set with `gcloud config list project`
 if not, update with `export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value core/project)`
@@ -12,7 +8,25 @@ if not, update with `export GOOGLE_CLOUD_PROJECT=$(gcloud config get-value core/
 associate with service account (needs at least BigQuery User and Viewer permissions)
 `export GOOGLE_APPLICATION_CREDENTIALS=/Users/${USER}/gcp/keys/big-query-api-key.json`
 
+## run locally
+
 install dependencies `npm install`
+run server `npm start`
+navigate to `http://localhost:8080/graphql`
+
+## available data
+
+latest Home Sensor reading (SQL query directly on BiqQuery)
+
+```
+query {
+  latestSensorReading {
+    temperature,
+    humidity,
+    timestamp
+  }
+}
+```
 
 ## build image
 
@@ -30,12 +44,10 @@ gcloud run deploy nrdcp-api \
   --allow-unauthenticated
 ```
 
-## todo
+## TODO
 
-* explore cloudbuild config
-* cors
-* git
-* logging
+* Logging
+* Cloudbuild from git hash
 
 
 
